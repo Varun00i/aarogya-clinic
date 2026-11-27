@@ -21,21 +21,19 @@ The seeded demo accounts all use the password `password`:
 
 ## Deploy to Render
 
-The repository includes a Dockerfile and Render Blueprint. The Blueprint deploys Tomcat 9 (compatible with this `javax.servlet` application) and attaches a 1 GB persistent disk for the H2 database. Persistent disks require a paid Render web-service plan; check Render's current pricing before deploying. Without persistent storage, accounts and appointments can be lost when the service restarts or redeploys.
+The repository includes a Dockerfile and Render Blueprint configured for Render's free web-service plan. It deploys Tomcat 9, which is compatible with this `javax.servlet` application.
 
 1. Push the complete project folder to a GitHub repository. Include `Dockerfile`, `docker/render-entrypoint.sh`, and `render.yaml`.
 2. In Render, choose **New + → Blueprint** and connect the GitHub repository and branch.
-3. Review the `aarogya-clinic` web service and its paid plan/disk, then apply the Blueprint.
+3. Review the `aarogya-clinic` web service and apply the Blueprint.
 4. Wait for the Docker build and deploy to finish. Open the `onrender.com` URL shown on the service page.
 5. Create a patient account and test an appointment. The demo accounts below are available on a fresh database.
 
-Pushes to the connected branch trigger automatic deploys. The H2 database is stored under the mounted disk at `/var/lib/aarogya`; the container configures the app to use that path.
-
-If you don't want a paid persistent disk, you can remove the `disk` block from `render.yaml` and select a free plan, but treat that deployment as a temporary demo because its database won't persist across restarts/redeploys.
+Pushes to the connected branch trigger automatic deploys. **Render's free filesystem is ephemeral:** H2 accounts and appointments may be erased when the service restarts, sleeps, or redeploys. This free setup is suitable for a demo, not reliable patient data storage. To preserve data, use a paid Render service with a persistent disk or configure a separately hosted database.
 
 ### Deploy without a Blueprint
 
-Create a Render **Web Service**, connect the repository, select **Docker** as the runtime, set the Dockerfile path to `./Dockerfile`, and add a persistent disk mounted at `/var/lib/aarogya`. The disk requires a paid plan. Set the environment variable `JAVA_OPTS` to `-Duser.home=/var/lib/aarogya`.
+Create a Render **Web Service**, connect the repository, select **Docker** as the runtime, and set the Dockerfile path to `./Dockerfile`. Choose the free plan for a demo. If you choose a paid plan with persistent storage, mount the disk at `/var/lib/aarogya` and set `JAVA_OPTS` to `-Duser.home=/var/lib/aarogya`.
 
 ## MySQL
 
