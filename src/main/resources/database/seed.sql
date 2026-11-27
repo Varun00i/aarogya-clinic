@@ -1,0 +1,12 @@
+INSERT INTO users(name,email,password_hash,role) VALUES ('Aarav Mehta','admin@aarogya.in','$2a$10$PPwzZN0sT10lifnLeQjpAeprXRnJauQnhvlFjBY0d8sXhxdvX0R0W','ADMIN');
+INSERT INTO users(name,email,password_hash,role) VALUES ('Dr. Amit Sharma','doctor@aarogya.in','$2a$10$PPwzZN0sT10lifnLeQjpAeprXRnJauQnhvlFjBY0d8sXhxdvX0R0W','DOCTOR');
+INSERT INTO users(name,email,password_hash,role) VALUES ('Neha Kapoor','reception@aarogya.in','$2a$10$PPwzZN0sT10lifnLeQjpAeprXRnJauQnhvlFjBY0d8sXhxdvX0R0W','RECEPTIONIST');
+INSERT INTO users(name,email,password_hash,role) VALUES ('Rahul Sharma','patient@aarogya.in','$2a$10$PPwzZN0sT10lifnLeQjpAeprXRnJauQnhvlFjBY0d8sXhxdvX0R0W','PATIENT');
+INSERT INTO departments(name,code,consultation_fee) VALUES ('General Medicine','GM',500),('Orthopedics','ORT',700),('Pediatrics','PED',600),('Cardiology','CAR',900),('Dermatology','DER',550),('ENT','ENT',550);
+INSERT INTO doctors(name,qualification,department_id,experience,consultation_fee,status) VALUES ('Dr. Amit Sharma','MBBS, MD',1,'10+ years',500,'Available'),('Dr. Priya Verma','MBBS, MS','2','8 years',700,'Available'),('Dr. Neha Gupta','MBBS, MD','3','12 years',600,'Available'),('Dr. Rajesh Kumar','DM Cardiology','4','15 years',900,'Available');
+UPDATE doctors SET user_id=(SELECT id FROM users WHERE email='doctor@aarogya.in') WHERE name='Dr. Amit Sharma';
+INSERT INTO patients(patient_id,full_name,guardian_name,dob,gender,mobile,email,address,city,state,pin_code,blood_group) VALUES ('PAT-2026-0001','Rahul Sharma','Ramesh Sharma','1992-06-18','Male','9876543210','patient@aarogya.in','Sector 62','Noida','Uttar Pradesh','201309','B+'),('PAT-2026-0002','Priya Sharma','Suresh Sharma','1998-03-12','Female','9123456780','priya@example.in','Indirapuram','Ghaziabad','Uttar Pradesh','201014','A+');
+UPDATE patients SET user_id=(SELECT id FROM users WHERE email='patient@aarogya.in') WHERE patient_id='PAT-2026-0001';
+INSERT INTO appointments(appointment_id,patient_id,doctor_id,department_id,appointment_date,appointment_time,status,priority) VALUES ('APT-2026-0001',1,1,1,'2026-11-27','09:30 AM','Waiting',0),('APT-2026-0002',2,1,1,'2026-11-27','10:30 AM','Waiting',0),('APT-2026-0003',1,2,2,'2026-11-27','01:00 PM','Scheduled',1);
+INSERT INTO tokens(token_number,appointment_id,department_id,status) VALUES ('GM-001',1,1,'Waiting'),('GM-002',2,1,'Waiting'),('ORT-001',3,2,'Waiting');
+INSERT INTO payments(appointment_id,amount,status,payment_method) VALUES (1,600,'Paid','Cash'),(2,600,'Paid','UPI'),(3,800,'Pending','Counter');

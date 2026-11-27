@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: aarogya-clinic
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /
+    envVars:
+      - key: JAVA_OPTS
+        value: -Duser.home=/var/lib/aarogya
+    disk:
+      name: aarogya-clinic-data
+      mountPath: /var/lib/aarogya
+      sizeGB: 1
